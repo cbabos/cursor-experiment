@@ -5,14 +5,14 @@ import { useAgent } from '../context/AgentContext';
 
 const RetroFormControl = styled(FormControl)({
   '& .MuiInputLabel-root': {
-    color: '#00ff00',
-    fontFamily: '"Press Start 2P", "Courier New", monospace',
-    fontSize: '12px',
+    color: '#000000',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    fontSize: '15px',
   },
   '& .MuiSelect-select': {
-    fontFamily: '"Press Start 2P", "Courier New", monospace',
-    fontSize: '14px',
-    color: '#00ff00',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+    fontSize: '15px',
+    color: '#000000',
   },
 });
 
@@ -40,12 +40,18 @@ export function ModelSelector() {
             key={model.name}
             value={model.name}
             sx={{
-              fontFamily: '"Press Start 2P", "Courier New", monospace',
-              fontSize: '14px',
-              color: '#00ff00',
-              backgroundColor: '#001100',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+              fontSize: '15px',
+              color: '#000000',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
               '&:hover': {
-                backgroundColor: '#003300',
+                backgroundColor: 'rgba(0, 122, 255, 0.1)',
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'rgba(0, 122, 255, 0.2)',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 122, 255, 0.3)',
+                },
               },
             }}
           >

@@ -10,28 +10,31 @@ const queryClient = new QueryClient();
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#00ff00', // Classic green terminal color
+      main: '#007AFF', // iOS blue
     },
     background: {
-      default: '#000000',
-      paper: '#000000',
+      default: '#F2F2F7', // iOS light gray
+      paper: 'rgba(255, 255, 255, 0.7)', // Translucent white
     },
     text: {
-      primary: '#00ff00',
-      secondary: '#00cc00',
+      primary: '#000000',
+      secondary: '#8E8E93', // iOS secondary text
     },
   },
   typography: {
-    fontFamily: '"Press Start 2P", "Courier New", monospace',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 0,
-          border: '2px solid #00ff00',
+          borderRadius: '12px',
+          textTransform: 'none',
+          fontWeight: 600,
+          backdropFilter: 'blur(10px)',
+          backgroundColor: 'rgba(0, 122, 255, 0.9)',
           '&:hover': {
-            backgroundColor: '#003300',
+            backgroundColor: 'rgba(0, 122, 255, 0.8)',
           },
         },
       },
@@ -40,13 +43,17 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 0,
-            backgroundColor: '#001100',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            backdropFilter: 'blur(10px)',
             '& fieldset': {
-              borderColor: '#00ff00',
+              borderColor: 'rgba(0, 0, 0, 0.1)',
             },
             '&:hover fieldset': {
-              borderColor: '#00ff00',
+              borderColor: 'rgba(0, 122, 255, 0.5)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#007AFF',
             },
           },
         },
@@ -55,10 +62,17 @@ const theme = createTheme({
     MuiSelect: {
       styleOverrides: {
         root: {
-          borderRadius: 0,
-          backgroundColor: '#001100',
+          borderRadius: '12px',
+          backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          backdropFilter: 'blur(10px)',
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#00ff00',
+            borderColor: 'rgba(0, 0, 0, 0.1)',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'rgba(0, 122, 255, 0.5)',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#007AFF',
           },
         },
       },

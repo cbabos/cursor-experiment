@@ -12,8 +12,8 @@ const ChatContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   height: '100vh',
-  backgroundColor: '#000000',
-  color: '#00ff00',
+  backgroundColor: '#F2F2F7',
+  color: '#000000',
 });
 
 const ChatLog = styled(Box)({
@@ -21,51 +21,49 @@ const ChatLog = styled(Box)({
   overflowY: 'auto',
   padding: '20px',
   '&::-webkit-scrollbar': {
-    width: '10px',
+    width: '8px',
   },
   '&::-webkit-scrollbar-track': {
-    background: '#001100',
+    background: 'rgba(0, 0, 0, 0.05)',
+    borderRadius: '4px',
   },
   '&::-webkit-scrollbar-thumb': {
-    background: '#00ff00',
-    border: '2px solid #001100',
+    background: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: '4px',
+    '&:hover': {
+      background: 'rgba(0, 0, 0, 0.3)',
+    },
   },
 });
 
 const InputArea = styled(Box)({
-  borderTop: '2px solid #00ff00',
   padding: '20px',
-  backgroundColor: '#001100',
+  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  backdropFilter: 'blur(10px)',
+  borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+  boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.05)',
 });
 
 const MessageBubble = styled(Box)({
   margin: '10px 0',
-  padding: '10px',
+  padding: '12px 16px',
   maxWidth: '80%',
-  border: '2px solid #00ff00',
-  backgroundColor: '#001100',
+  borderRadius: '16px',
+  backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)',
   alignSelf: 'flex-start',
-  position: 'relative',
-  '&:before': {
-    content: '""',
-    position: 'absolute',
-    top: '-2px',
-    left: '-2px',
-    right: '-2px',
-    bottom: '-2px',
-    border: '2px solid #00ff00',
-    pointerEvents: 'none',
-  },
   '&.user': {
-    backgroundColor: '#003300',
+    backgroundColor: 'rgba(0, 122, 255, 0.1)',
     alignSelf: 'flex-end',
   },
 });
 
 const RetroTypography = styled(Typography)({
-  fontFamily: '"Press Start 2P", "Courier New", monospace',
-  fontSize: '14px',
-  lineHeight: '1.5',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  fontSize: '15px',
+  lineHeight: '1.4',
+  color: '#000000',
 });
 
 interface SystemMessage {
@@ -223,9 +221,9 @@ export function Chat() {
             disabled={isLoading}
             sx={{
               '& .MuiInputBase-input': {
-                color: '#00ff00',
-                fontFamily: '"Press Start 2P", "Courier New", monospace',
-                fontSize: '14px',
+                color: '#000000',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                fontSize: '15px',
               },
             }}
           />
@@ -241,6 +239,10 @@ export function Chat() {
                 '0%': { opacity: 1 },
                 '50%': { opacity: 0.5 },
                 '100%': { opacity: 1 },
+              },
+              backgroundColor: 'rgba(0, 122, 255, 0.9)',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 122, 255, 0.8)',
               },
             }}
           >
