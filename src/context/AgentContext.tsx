@@ -87,6 +87,7 @@ export function AgentProvider({ children }: { children: ReactNode }) {
         searchMemory,
         executeTool,
       }}
+      data-testid="agent-provider"
     >
       {children}
     </AgentContext.Provider>

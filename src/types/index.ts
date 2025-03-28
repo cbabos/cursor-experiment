@@ -21,4 +21,9 @@ export interface Tool {
   name: string;
   description: string;
   execute: (args: any) => Promise<any>;
+}
+
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
 } 

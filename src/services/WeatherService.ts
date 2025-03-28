@@ -19,8 +19,21 @@ interface WeatherResponse {
   name: string;
 }
 
+interface WeatherResult {
+  temperature: number;
+  humidity: number;
+  description: string;
+  windSpeed: number;
+}
+
+interface WeatherError {
+  error: string;
+}
+
+type WeatherServiceResult = WeatherResult | WeatherError;
+
 export class WeatherService {
-  static async getCurrentWeather(location: string): Promise<string> {
+  static async getCurrentWeather(location: string): Promise<WeatherServiceResult> {
     try {
       const response = await axios.get<WeatherResponse>(
         `${WEATHER_API_BASE}/weather`,
@@ -33,18 +46,23 @@ export class WeatherService {
         }
       );
 
-      const { weather, main, wind, name } = response.data;
+      const { weather, main, wind } = response.data;
       
-      return `Current weather in ${name}:
-Temperature: ${Math.round(main.temp)}°C (feels like ${Math.round(main.feels_like)}°C)
-Conditions: ${weather[0].description}
-Humidity: ${main.humidity}%
-Wind Speed: ${Math.round(wind.speed * 3.6)} km/h`;
+      return {
+        temperature: Math.round(main.temp),
+        humidity: main.humidity,
+        description: weather[0].description,
+        windSpeed: Math.round(wind.speed),
+      };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
-        return `Location "${location}" not found. Please check the spelling and try again.`;
+        return {
+          error: 'Location not found',
+        };
       }
-      return `Error fetching weather data: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      return {
+        error: 'Failed to fetch weather data',
+      };
     }
   }
 } 

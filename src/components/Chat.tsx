@@ -1,9 +1,68 @@
 import { useState } from 'react';
-import { Box, TextField, Button, Paper, Typography, CircularProgress } from '@mui/material';
+import { Box, TextField, Button, Typography, styled } from '@mui/material';
 import { useAgent } from '../context/AgentContext';
 import { ollamaApi } from '../api/ollama';
 import { MessageParser } from '../services/MessageParser';
-import { Message } from '../types';
+import { Message, ChatMessage } from '../types';
+import { ModelSelector } from './ModelSelector';
+import SendIcon from '@mui/icons-material/Send';
+
+// Styled components
+const ChatContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100vh',
+  backgroundColor: '#000000',
+  color: '#00ff00',
+});
+
+const ChatLog = styled(Box)({
+  flexGrow: 1,
+  overflowY: 'auto',
+  padding: '20px',
+  '&::-webkit-scrollbar': {
+    width: '10px',
+  },
+  '&::-webkit-scrollbar-track': {
+    background: '#001100',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: '#00ff00',
+    border: '2px solid #001100',
+  },
+});
+
+const InputArea = styled(Box)({
+  borderTop: '2px solid #00ff00',
+  padding: '20px',
+  backgroundColor: '#001100',
+});
+
+const MessageBubble = styled(Box)(({ isUser }: { isUser: boolean }) => ({
+  margin: '10px 0',
+  padding: '10px',
+  maxWidth: '80%',
+  border: '2px solid #00ff00',
+  backgroundColor: isUser ? '#003300' : '#001100',
+  alignSelf: isUser ? 'flex-end' : 'flex-start',
+  position: 'relative',
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    top: '-2px',
+    left: '-2px',
+    right: '-2px',
+    bottom: '-2px',
+    border: '2px solid #00ff00',
+    pointerEvents: 'none',
+  },
+}));
+
+const RetroTypography = styled(Typography)({
+  fontFamily: '"Press Start 2P", "Courier New", monospace',
+  fontSize: '14px',
+  lineHeight: '1.5',
+});
 
 interface SystemMessage {
   role: 'system';
@@ -115,49 +174,76 @@ export function Chat() {
   };
 
   return (
-    <Box sx={{ mt: 2 }}>
-      <Paper
-        sx={{
-          height: '400px',
-          overflowY: 'auto',
-          p: 2,
-          mb: 2,
-        }}
-      >
+    <ChatContainer>
+      <ChatLog>
         {memory.shortTerm.map((message, index) => (
-          <Box
+          <MessageBubble
             key={index}
+            isUser={message.role === 'user'}
             sx={{
-              mb: 2,
-              textAlign: message.role === 'user' ? 'right' : 'left',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: message.role === 'user' ? 'flex-end' : 'flex-start',
             }}
           >
-            <Typography
+            <RetroTypography
               sx={{
-                display: 'inline-block',
-                backgroundColor: message.role === 'user' ? '#e3f2fd' : '#f5f5f5',
-                p: 1,
-                borderRadius: 1,
+                wordBreak: 'break-word',
+                whiteSpace: 'pre-wrap',
               }}
             >
               {message.content}
-            </Typography>
-          </Box>
+            </RetroTypography>
+          </MessageBubble>
         ))}
-      </Paper>
-      <form onSubmit={handleSubmit}>
-        <Box sx={{ display: 'flex', gap: 1 }}>
+      </ChatLog>
+      
+      <InputArea>
+        <Box sx={{ mb: 2 }}>
+          <ModelSelector />
+        </Box>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          role="form"
+          sx={{
+            display: 'flex',
+            gap: 1,
+          }}
+        >
           <TextField
             fullWidth
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
+            disabled={isLoading}
+            sx={{
+              '& .MuiInputBase-input': {
+                color: '#00ff00',
+                fontFamily: '"Press Start 2P", "Courier New", monospace',
+                fontSize: '14px',
+              },
+            }}
           />
-          <Button type="submit" variant="contained" disabled={!selectedModel || isLoading}>
-            Send
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!selectedModel || isLoading}
+            sx={{
+              minWidth: '100px',
+              height: '56px',
+              animation: isLoading ? 'pulse 1s infinite' : 'none',
+              '@keyframes pulse': {
+                '0%': { opacity: 1 },
+                '50%': { opacity: 0.5 },
+                '100%': { opacity: 1 },
+              },
+            }}
+          >
+            {isLoading ? '...' : <SendIcon />}
           </Button>
         </Box>
-      </form>
-    </Box>
+      </InputArea>
+    </ChatContainer>
   );
 } 
