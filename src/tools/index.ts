@@ -5,10 +5,14 @@ export const weatherTool: Tool = {
   name: 'weather',
   description: 'Get current weather conditions for a location (city name)',
   async execute({ location }: { location: string }) {
-    if (!location) {
+    if (!location || location.trim() === '') {
       return 'Error: Location is required';
     }
-    return await WeatherService.getCurrentWeather(location);
+    const result = await WeatherService.getCurrentWeather(location);
+    if ('error' in result) {
+      return `Error: ${result.error}`;
+    }
+    return `Temperature: ${result.temperature}°C, Humidity: ${result.humidity}%, Conditions: ${result.description}, Wind Speed: ${result.windSpeed} km/h`;
   },
 };
 

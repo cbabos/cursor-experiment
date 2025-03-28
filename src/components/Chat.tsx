@@ -38,13 +38,13 @@ const InputArea = styled(Box)({
   backgroundColor: '#001100',
 });
 
-const MessageBubble = styled(Box)(({ isUser }: { isUser: boolean }) => ({
+const MessageBubble = styled(Box)({
   margin: '10px 0',
   padding: '10px',
   maxWidth: '80%',
   border: '2px solid #00ff00',
-  backgroundColor: isUser ? '#003300' : '#001100',
-  alignSelf: isUser ? 'flex-end' : 'flex-start',
+  backgroundColor: '#001100',
+  alignSelf: 'flex-start',
   position: 'relative',
   '&:before': {
     content: '""',
@@ -56,7 +56,11 @@ const MessageBubble = styled(Box)(({ isUser }: { isUser: boolean }) => ({
     border: '2px solid #00ff00',
     pointerEvents: 'none',
   },
-}));
+  '&.user': {
+    backgroundColor: '#003300',
+    alignSelf: 'flex-end',
+  },
+});
 
 const RetroTypography = styled(Typography)({
   fontFamily: '"Press Start 2P", "Courier New", monospace',
@@ -179,7 +183,7 @@ export function Chat() {
         {memory.shortTerm.map((message, index) => (
           <MessageBubble
             key={index}
-            isUser={message.role === 'user'}
+            className={message.role === 'user' ? 'user' : ''}
             sx={{
               display: 'flex',
               flexDirection: 'column',

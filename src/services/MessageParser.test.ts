@@ -41,4 +41,83 @@ describe('MessageParser', () => {
 
     expect(result).toHaveLength(0);
   });
+
+  it('should handle tool calls with multiple arguments', () => {
+    const content = '/tool:search{query: weather in London, limit: 5}';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      name: 'search',
+      args: {
+        query: 'weather in London',
+        limit: '5',
+      },
+    });
+  });
+
+  it('should handle tool calls with values containing colons', () => {
+    const content = '/tool:search{url: https://example.com}';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      name: 'search',
+      args: {
+        url: 'https://example.com',
+      },
+    });
+  });
+
+  it('should handle tool calls with values containing commas', () => {
+    const content = '/tool:search{query: weather in London, Paris, and Berlin}';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      name: 'search',
+      args: {
+        query: 'weather in London, Paris, and Berlin',
+      },
+    });
+  });
+
+  it('should handle tool calls with empty arguments', () => {
+    const content = '/tool:weather{}';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(0);
+  });
+
+  it('should handle tool calls with whitespace in arguments', () => {
+    const content = '/tool:weather{  location  :  London  }';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      name: 'weather',
+      args: {
+        location: 'London',
+      },
+    });
+  });
+
+  it('should handle multiple tool calls with mixed valid and invalid formats', () => {
+    const content = '/tool:weather{location: London} /tool:invalid{} /tool:calculator{expression: 1 + 1}';
+    const result = MessageParser.parseToolCalls(content);
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual({
+      name: 'weather',
+      args: {
+        location: 'London',
+      },
+    });
+    expect(result[1]).toEqual({
+      name: 'calculator',
+      args: {
+        expression: '1 + 1',
+      },
+    });
+  });
 }); 
