@@ -1,54 +1,141 @@
-# React + TypeScript + Vite
+# AI Assistant with Email Integration
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered assistant that can help you manage your emails and check weather information through a chat interface.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📧 Email Management
+  - Check unread emails with pagination
+  - View email summaries including subject, sender, date, and snippets
+  - Attachment detection
+  - Size information
+- 🌤 Weather Information
+  - Get current weather conditions
+  - Weather forecasts
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v16 or higher)
+- npm (v7 or higher)
+- Gmail account with App Password enabled
+- OpenWeatherMap API key
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd assistantCursor
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Create a `.env` file in the project root:
+```env
+VITE_EMAIL_USER=your.email@gmail.com
+VITE_EMAIL_PASSWORD=your-app-password
+VITE_WEATHER_API_KEY=your-openweathermap-api-key
+```
+
+### Setting up Gmail App Password
+
+1. Go to your Google Account settings (https://myaccount.google.com)
+2. Navigate to Security > 2-Step Verification
+3. Scroll to the bottom and select "App passwords"
+4. Generate a new app password:
+   - Select "Mail" as the app
+   - Select "Other" as the device
+   - Name it "AI Assistant"
+   - Copy the generated 16-character password
+5. Use this password in your `.env` file for `VITE_EMAIL_PASSWORD`
+
+### Getting OpenWeatherMap API Key
+
+1. Sign up at OpenWeatherMap (https://openweathermap.org/api)
+2. Go to your API keys section
+3. Generate a new API key
+4. Copy the API key to your `.env` file for `VITE_WEATHER_API_KEY`
+
+## Running the Application
+
+1. Start the backend server:
+```bash
+npm run server
+```
+
+2. In a new terminal, start the frontend development server:
+```bash
+npm run dev
+```
+
+3. Open your browser and navigate to `http://localhost:5173`
+
+## Available Tools
+
+### Email Tool
+Check your unread emails using natural language commands in the chat interface.
+
+Example commands:
+- "Check my unread emails"
+- "Show me my latest emails"
+
+The tool will display:
+- Sender name/email
+- Subject
+- Date
+- Attachment indicator (📎)
+- Email size
+- Preview snippet (when available)
+
+### Weather Tool
+Get weather information for any location.
+
+Example commands:
+- "What's the weather like in London?"
+- "Show me the forecast for New York"
+
+## Development
+
+The project structure is organized as follows:
+
+```
+├── src/
+│   ├── components/     # Frontend React components
+│   ├── context/       # React context providers
+│   ├── tools/         # Frontend tool implementations
+│   └── config/        # Frontend configuration
+├── server/
+│   ├── src/
+│   │   ├── services/  # Backend services
+│   │   ├── routes/    # API route handlers
+│   │   └── config/    # Backend configuration
+│   └── index.ts       # Main server file
+└── .env              # Environment variables
+```
+
+## Security Notes
+
+- Never commit your `.env` file or expose your credentials
+- The Gmail App Password is specific to this application and can be revoked at any time
+- The server uses CORS and runs on a different port than the frontend
+- Email credentials are only stored on the backend for security
+
+## Troubleshooting
+
+1. If the server fails to start:
+   - Check if port 3001 is already in use
+   - Verify your email credentials in `.env`
+   - Ensure your Gmail account has IMAP enabled
+
+2. If email fetching fails:
+   - Verify your App Password is correct
+   - Check if your Gmail account has 2FA enabled
+   - Ensure you have an active internet connection
+
+3. If weather data isn't showing:
+   - Verify your OpenWeatherMap API key
+   - Check if you've exceeded the API rate limits
+   - Ensure the location name is valid
