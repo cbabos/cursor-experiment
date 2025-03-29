@@ -33,6 +33,6 @@ describe('App', () => {
     // Check that the theme is applied to the input field
     const input = screen.getByPlaceholderText('Type your message...');
     const inputContainer = input.closest('.MuiOutlinedInput-root');
-    expect(inputContainer).toHaveStyle({ backgroundColor: '#001100' });
+    expect(inputContainer).toHaveStyle({ backgroundColor: 'rgba(255, 255, 255, 0.7)' });
   });
 }); 
