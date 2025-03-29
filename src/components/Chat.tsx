@@ -85,13 +85,17 @@ export function Chat() {
   } = useAgent();
 
   const processToolCalls = async (content: string): Promise<string> => {
+    console.log('Processing tool calls from content:', content);
     const toolCalls = MessageParser.parseToolCalls(content);
+    console.log('Parsed tool calls:', toolCalls);
     if (toolCalls.length === 0) return content;
 
     let processedContent = content;
     for (const toolCall of toolCalls) {
       try {
+        console.log('Executing tool:', toolCall.name, 'with args:', toolCall.args);
         const result = await executeTool(toolCall.name, toolCall.args);
+        console.log('Tool execution result:', result);
         processedContent = processedContent.replace(
           `/tool:${toolCall.name}{${Object.entries(toolCall.args).map(([k, v]) => `${k}: ${v}`).join(', ')}}`,
           `[${toolCall.name} result: ${result}]`
@@ -108,13 +112,22 @@ export function Chat() {
   };
 
   const createSystemPrompt = () => {
+    console.log('Available tools:', tools);
     const toolDescriptions = tools.map(tool => 
-      `${tool.name}: ${tool.description} - Use with /tool:${tool.name}{args}`
+      `${tool.name}: ${tool.description} - Use with /tool:${tool.name}{}`
     ).join('\n');
 
-    return `You have access to the following tools:\n${toolDescriptions}\n\n` +
-           `To use a tool, include /tool:name{arg1: value1, arg2: value2} in your response.\n` +
-           `Example: To check weather use /tool:weather{location: London}`;
+    const systemPrompt = `You have access to the following tools:\n${toolDescriptions}\n\n` +
+           `IMPORTANT: When using tools, you must use the exact format shown below:\n` +
+           `1. For tools with arguments: /tool:name{arg1: value1, arg2: value2}\n` +
+           `2. For tools without arguments (like email): /tool:email{}\n\n` +
+           `Examples:\n` +
+           `- To check weather: /tool:weather{location: London}\n` +
+           `- To check emails: /tool:email{}\n\n` +
+           `DO NOT make up or simulate responses. Always use the actual tool calls.`;
+    
+    console.log('System prompt:', systemPrompt);
+    return systemPrompt;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

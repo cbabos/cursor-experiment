@@ -3,6 +3,7 @@ import { Memory, Model, Tool, Message } from '../types';
 import { MemoryService } from '../services/MemoryService';
 import { ToolService } from '../services/ToolService';
 import { weatherTool, calculatorTool, searchTool } from '../tools';
+import { emailTool } from '../tools/email';
 
 interface AgentContextType {
   selectedModel: Model | null;
@@ -31,6 +32,7 @@ export function AgentProvider({ children }: { children: ReactNode }) {
     service.registerTool(weatherTool);
     service.registerTool(calculatorTool);
     service.registerTool(searchTool);
+    service.registerTool(emailTool);
     return service;
   });
 
