@@ -12,6 +12,10 @@ An AI-powered assistant that can help you manage your emails and check weather i
 - 🌤 Weather Information
   - Get current weather conditions
   - Weather forecasts
+- 🤖 AI-Powered Assistant
+  - Natural language processing
+  - Context-aware responses
+  - Tool integration
 
 ## Prerequisites
 
@@ -19,21 +23,34 @@ An AI-powered assistant that can help you manage your emails and check weather i
 - npm (v7 or higher)
 - Gmail account with App Password enabled
 - OpenWeatherMap API key
+- Ollama (latest version)
 
 ## Installation
 
-1. Clone the repository:
+1. Install Ollama:
+   - macOS or Linux:
+   ```bash
+   curl -fsSL https://ollama.com/install.sh | sh
+   ```
+   - Windows: Download from https://ollama.com/download
+   
+2. Pull the required model:
+```bash
+ollama pull claude
+```
+
+3. Clone the repository:
 ```bash
 git clone <repository-url>
 cd assistantCursor
 ```
 
-2. Install dependencies:
+4. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the project root:
+5. Create a `.env` file in the project root:
 ```env
 VITE_EMAIL_USER=your.email@gmail.com
 VITE_EMAIL_PASSWORD=your-app-password
@@ -139,3 +156,9 @@ The project structure is organized as follows:
    - Verify your OpenWeatherMap API key
    - Check if you've exceeded the API rate limits
    - Ensure the location name is valid
+
+4. If the AI assistant is not responding:
+   - Verify Ollama is running (`ollama ps`)
+   - Check if the claude model is installed (`ollama list`)
+   - Try restarting the Ollama service
+   - Ensure you have enough system resources available
